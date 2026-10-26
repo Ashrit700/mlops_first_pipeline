@@ -1,0 +1,47 @@
+name: Iris ML API-CI PIPELINE
+on:
+  push:
+      branches:
+          - main
+  pull_request:
+      branches:
+          - main
+
+permissions:
+    contents: read
+
+jobs:
+    test-and-build:
+      runs-on: ubuntu-latest
+
+      steps:
+      #step 1: download the repo content on runner
+          - name: check out repository
+            uses: actions/checkout@v4
+
+            #step 2 Install python on runnner
+          - name: Install Python on Runner
+            uses: actions/setup-python@v5
+            with:
+              python-version: "3.14"
+
+          #step 3 
+
+          - name: Install Python Dependencies
+            run : |
+              python -m pip install --upgrade pip
+              pip install -r requirements.txt
+
+          #step 4-- Execute the automated test
+          - name: Run automated tests
+            run: python -m pytest -v
+
+          # step 5-- Build image only after tests have passed 
+          - name: Build Docker Image
+            run: docker build -t iris-ml-api:${{github.sha}}
+
+
+
+
+
+
