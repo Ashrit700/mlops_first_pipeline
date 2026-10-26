@@ -15,7 +15,7 @@ class IrisRequest(BaseModel):
 
 @app.get("/health")
 def health_check():
-    return {"status": "API is running"}
+    return {"status": "healthy"}
 
 @app.post("/predict")
 def predict(data:IrisRequest):
